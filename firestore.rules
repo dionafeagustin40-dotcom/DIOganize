@@ -1,0 +1,39 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // An admin is anyone who has a document in the "admins" collection
+    // whose document ID equals their Firebase Auth UID.
+    function isAdmin() {
+      return request.auth != null &&
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+    // Users may only check whether THEY are an admin. Nobody can edit this
+    // collection from the app; add admins in the Firebase Console.
+    match /admins/{uid} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow write: if false;
+    }
+
+    match /serviceApplications/{applicationId} {
+      // Users can only submit their own request, and it must start as Pending.
+      allow create: if request.auth != null
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.status == 'Pending';
+
+      // Users read their own requests. Admins read all of them.
+      allow read: if request.auth != null
+        && (resource.data.uid == request.auth.uid || isAdmin());
+
+      // Only admins can approve / reject (change anything).
+      allow update: if isAdmin();
+
+      // Admins can delete any. Users can cancel only their own Pending request.
+      allow delete: if isAdmin()
+        || (request.auth != null
+            && resource.data.uid == request.auth.uid
+            && resource.data.status == 'Pending');
+    }
+  }
+}
