@@ -1,0 +1,366 @@
+/* DIOganize theme: navy + gold. Loaded after App.css so it overrides it. */
+:root{--navy-deep:#071a3a;--navy:#0d2a57;--navy-2:#153a72;--gold:#d8b25c;--gold-2:#f0d488;--ink:#1c2a44;--card:rgba(255,255,255,.95);--card-line:rgba(216,178,92,.4)}
+
+/* ---------- shell ---------- */
+.app-shell{background:var(--navy-deep)}
+.main-area{margin-left:264px;min-height:100vh;
+  background:linear-gradient(rgba(7,26,58,.74),rgba(7,26,58,.9)),url('/images/cathedral.jpg') center top/cover no-repeat,linear-gradient(160deg,#0d2a57,#071a3a)}
+.page-container{padding:26px 30px 40px;max-width:1500px}
+
+/* ---------- sidebar ---------- */
+.sidebar{width:264px;padding:22px 16px 16px;background:linear-gradient(180deg,rgba(10,30,68,.97),rgba(6,20,48,.99));border-right:1px solid var(--card-line);box-shadow:8px 0 30px rgba(0,0,0,.35)}
+.brand{flex-direction:column;text-align:center;gap:4px;padding:4px 8px 20px;align-items:center}
+.brand-icon{color:var(--gold-2)}
+.brand strong{font-size:28px;letter-spacing:.5px;color:var(--gold-2)}
+.brand strong span{color:var(--gold-2)}
+.brand small{font-size:10.5px;letter-spacing:.3px;color:#cfd9ee;line-height:1.4;max-width:190px}
+.sidebar nav{padding-top:4px}
+.nav-item{display:flex;align-items:center;gap:14px;padding:12px 16px;margin:5px 0;border:1px solid transparent;border-radius:12px;font-size:15px;color:#e8eefc}
+.nav-item .icon{color:var(--gold-2);flex:none}
+.nav-item:hover{background:rgba(255,255,255,.07);color:#fff}
+.nav-item.active{background:linear-gradient(90deg,rgba(216,178,92,.32),rgba(216,178,92,.12));border:1px solid var(--gold);padding-left:16px;color:#fff;box-shadow:inset 0 0 12px rgba(216,178,92,.15)}
+.sidebar-verse{margin-top:10px;padding:14px 8px;text-align:center;color:var(--gold-2);border-top:1px solid rgba(216,178,92,.25)}
+.sidebar-verse p{font-family:'Playfair Display',serif;font-style:italic;font-size:12.5px;line-height:1.5;color:#dbe4f7;margin:8px 0 6px}
+.sidebar-verse small{font-size:10px;color:#cfd9ee}
+.logout-link{margin-top:4px;background:rgba(255,255,255,.08);border:1px solid rgba(216,178,92,.3);border-radius:10px;font-size:12px}
+.logout-link:hover{background:rgba(216,178,92,.2)}
+
+/* ---------- topbar ---------- */
+.topbar{height:84px;padding:0 30px;background:rgba(7,26,58,.55);backdrop-filter:blur(8px);border-bottom:1px solid rgba(216,178,92,.25);gap:20px}
+.search-box{flex:0 1 520px;display:flex;align-items:center;gap:10px;background:#fff;border-radius:12px;padding:0 16px;height:48px;color:#6b7893;box-shadow:0 6px 20px rgba(0,0,0,.2)}
+.search-box input{flex:1;border:0;outline:0;background:transparent;font-size:14px;color:var(--ink)}
+.topbar-right{display:flex;align-items:center;gap:22px;margin-left:auto}
+.notification-button{position:relative;border:0;background:transparent;color:#fff;padding:6px;display:grid;place-items:center}
+.notif-dot{position:absolute;top:4px;right:4px;width:9px;height:9px;border-radius:50%;background:#ef4444;border:2px solid var(--navy-deep)}
+.profile-wrap{position:relative}
+.admin-profile{display:flex;align-items:center;gap:12px;border:0;background:transparent;color:#fff;text-align:left}
+.admin-profile img,.admin-profile .avatar{width:46px;height:46px;border-radius:50%;border:2px solid var(--gold);object-fit:cover;font-size:18px}
+.admin-profile span{display:flex;flex-direction:column}
+.admin-profile strong{font-size:14px;color:#fff}
+.admin-profile small{font-size:12px;color:#cfd9ee;text-transform:none;letter-spacing:0}
+.profile-menu{position:absolute;right:0;top:calc(100% + 8px);min-width:150px;background:#fff;border-radius:10px;box-shadow:0 12px 30px rgba(0,0,0,.3);overflow:hidden;z-index:30}
+.profile-menu button{width:100%;border:0;background:#fff;padding:12px 16px;text-align:left;font-size:13px;color:var(--ink)}
+.profile-menu button:hover{background:#f1f4fa}
+.mobile-menu{color:#fff}
+
+/* ---------- cards ---------- */
+.stat-card,.panel,.calendar-card,.table-card,.event-list,.schedule-card,.detail-info,.announcement-grid article,.facility-grid>div{background:var(--card);border:1px solid var(--card-line);border-radius:16px;box-shadow:0 14px 40px rgba(0,0,0,.28)}
+.detail-info,.schedule-card,.table-card,.event-list{overflow:hidden}
+.service-detail-hero{border-radius:16px}
+
+/* headings on the dark background */
+.page-heading h1{color:#fff}
+.page-heading p{color:#cfd9ee;font-size:14px}
+.eyebrow.dark{color:var(--gold-2)}
+
+/* ---------- dashboard ---------- */
+.dashboard-hero{min-height:250px;padding:40px 46px;border-radius:18px;border:1px solid var(--card-line);
+  background:linear-gradient(90deg,rgba(7,26,58,.88),rgba(7,26,58,.3)),url('/images/cathedral.jpg') center/cover no-repeat,linear-gradient(135deg,#153a72,#0a1f4a)}
+.hero-small{font-family:'Playfair Display',serif;font-size:26px;color:#fff;margin:0}
+.dashboard-hero h1{font-size:46px;margin:2px 0 12px;color:#fff}
+.hero-blessing{font-size:14px;color:#e7eef8;margin:0 0 10px}
+.hero-verse{font-size:13px;color:#dbe4f7;line-height:1.6;margin:0 0 18px;max-width:420px}
+.hero-verse b{color:var(--gold-2);font-weight:600}
+.hero-cta{padding:12px 20px;font-size:13px;border-radius:10px}
+
+.stat-row{gap:16px;margin:18px 0}
+.stat-card{display:flex;align-items:center;gap:16px;padding:18px 20px}
+.stat-card small{display:block;font-size:13px;color:#5b6883}
+.stat-card b{font-size:34px;color:var(--ink);line-height:1.1}
+.stat-icon{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;flex:none}
+.stat-icon.blue{background:#e4ebfa;color:#2a4a8f}
+.stat-icon.green{background:#dcf3e4;color:#1f8a4c}
+.stat-icon.amber{background:#fdf0d2;color:#b7791f}
+.stat-icon.red{background:#fde3e3;color:#c53030}
+
+.dashboard-columns{grid-template-columns:1.6fr 1fr;gap:18px}
+.panel{padding:22px}
+.panel-title h2{font-size:22px;margin:0;color:var(--ink)}
+.panel-title button{font-size:13px;color:#9a7422}
+
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.svc-grid.big{grid-template-columns:repeat(4,1fr);gap:18px}
+.svc-card{border:1px solid #e3e8f2;background:#fff;border-radius:14px;overflow:hidden;text-align:left;padding:0;box-shadow:0 6px 18px rgba(13,42,87,.1);transition:transform .15s,box-shadow .15s}
+.svc-card:hover{transform:translateY(-3px);box-shadow:0 12px 26px rgba(13,42,87,.2);border-color:var(--gold)}
+.svc-img{height:140px;background-size:cover;background-position:center}
+.svc-body{padding:12px 14px 14px}
+.svc-body b{display:block;font-family:'Playfair Display',serif;font-size:18px;color:var(--ink)}
+.svc-body small{display:block;font-size:12.5px;color:#66748f;margin-top:4px}
+.svc-img.baptism{background-image:url('/images/baptism.jpg'),linear-gradient(135deg,#2a86b3,#0d3b66)}
+.svc-img.wedding{background-image:url('/images/wedding.jpg'),linear-gradient(135deg,#f0dfb4,#b8935a)}
+.svc-img.funeral{background-image:url('/images/funeral.jpg'),linear-gradient(135deg,#6b4423,#1a0f08)}
+.svc-img.confirmation{background-image:url('/images/confirmation.jpg'),linear-gradient(135deg,#c0392b,#5a1a14)}
+.svc-img.communion{background-image:url('/images/communion.jpg'),linear-gradient(135deg,#f5efe0,#c9b27a)}
+.svc-img.blessing{background-image:url('/images/blessing.jpg'),linear-gradient(135deg,#7fa8d6,#2b4f86)}
+.svc-img.marriageprep{background-image:url('/images/marriageprep.jpg'),linear-gradient(135deg,#d89a9a,#7d3b4a)}
+
+.up-item{display:flex;align-items:center;gap:12px;padding:12px;margin-bottom:8px;border:1px solid #e6ebf4;border-radius:12px;background:#fff}
+.up-item>div{flex:1;min-width:0}
+.up-item b{display:block;font-size:14px;color:var(--ink)}
+.up-item small{display:block;font-size:12.5px;color:#66748f;margin-top:3px}
+.up-icon{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;flex:none;background:#e4ebfa;color:#2a4a8f}
+.up-icon.wedding{background:#fdf0d2;color:#b7791f}
+.up-icon.funeral{background:#fbe6d4;color:#a0522d}
+.up-icon.baptism{background:#dcf3e4;color:#1f8a4c}
+.status{font-size:11.5px;padding:5px 10px}
+.empty-state{font-size:13px;color:#66748f}
+
+/* ---------- responsive ---------- */
+@media(max-width:1200px){.svc-grid.big{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:1000px){.main-area{margin-left:0}.dashboard-columns{grid-template-columns:1fr}.topbar{padding:0 16px}.svc-grid.big{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){.page-container{padding:18px}.svc-grid,.svc-grid.big{grid-template-columns:1fr}.admin-profile span,.admin-profile .icon{display:none}.dashboard-hero{padding:28px 24px}.dashboard-hero h1{font-size:34px}.stat-row{grid-template-columns:1fr 1fr}.stat-card{padding:14px;gap:10px}.stat-icon{width:44px;height:44px}}
+
+/* ================= LOGIN ================= */
+.login-page{grid-template-columns:1.1fr .9fr;background:linear-gradient(160deg,#153a72,#071a3a)}
+.login-photo{background:linear-gradient(90deg,rgba(7,26,58,.8),rgba(7,26,58,.35)),url('/images/cathedral.jpg') center/cover no-repeat,linear-gradient(135deg,#153a72,#0a1f4a)}
+.login-photo-copy>span{color:var(--gold-2);font-size:11px}
+.login-photo-copy h1{font-size:52px}
+.login-photo-copy h1 i{color:var(--gold-2)}
+.login-photo-copy p{font-size:18px}
+.login-photo-copy b{color:var(--gold-2);font-size:11px}
+.back-home{font-size:13px}
+.login-side{background:linear-gradient(180deg,rgba(7,26,58,.96),rgba(10,30,68,.98))}
+.login-card{width:min(440px,100%);padding:36px 38px;border-radius:22px;border:1px solid var(--gold);background:linear-gradient(180deg,#fff,#f6f8fd);box-shadow:0 24px 60px rgba(0,0,0,.45)}
+.login-card .logo-lockup{justify-content:center;margin-bottom:14px}
+.logo-mark{border-radius:12px;color:var(--gold)}
+.login-card .logo-lockup strong{font-size:26px;color:var(--ink)}
+.login-card .logo-lockup strong span{color:#b38a32}
+.login-card .logo-lockup small{font-size:10px}
+.login-card .eyebrow{display:block;text-align:center;font-size:11px}
+.login-card h2{text-align:center;font-size:30px;color:var(--ink)}
+.login-card>.muted{text-align:center;font-size:13.5px;color:#66748f}
+.login-card label{font-size:13px;color:#42506b}
+.login-card .field,.login-card .password-wrap{position:relative;display:block;margin-top:6px}
+.login-card .field>.icon,.login-card .password-wrap>.icon{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:#8492ad;pointer-events:none}
+.login-card input{margin-top:0;padding:13px 14px 13px 42px;border:1px solid #d5dcec;border-radius:10px;font-size:14px;background:#fff}
+.login-card input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(216,178,92,.25)}
+.password-wrap button{top:50%;transform:translateY(-50%);right:12px;font-size:12px;color:#42506b}
+.login-options button{font-size:12.5px;color:#9a7422}
+.login-card .button-primary{padding:14px;font-size:15px;border-radius:10px;background:linear-gradient(180deg,#1b3f7a,#0d2a57);border:1px solid var(--gold)}
+.or{font-size:12px}
+.google-button{padding:12px;border-radius:10px;font-size:14px;border:1px solid #d5dcec}
+.google-button span{border:0;font-weight:800;font-size:15px}
+.secure-note{font-size:12px;color:#66748f;margin:12px 0 0}
+.login-error,.login-success{font-size:12.5px;border-radius:8px;padding:10px}
+
+/* ================= SCHEDULE FORM ================= */
+.page-heading .text-button{color:#fff;font-size:14px}
+.svc-pick{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-bottom:18px}
+.svc-pick .svc-img{height:84px}
+.svc-pick .svc-body{padding:8px 10px 10px}
+.svc-pick .svc-body b{font-size:14px}
+.svc-pick .svc-body small{font-size:11px}
+.svc-card.selected{border:2px solid var(--gold);box-shadow:0 0 0 4px rgba(216,178,92,.35)}
+.steps>div{font-size:13px;color:#7a869f}
+.steps .active{color:var(--ink)}
+.form-section h2{font-size:26px;color:var(--ink)}
+.form-section h2 small{font-family:'DM Sans',sans-serif;font-size:14px;color:#66748f;font-weight:400}
+.form-section>p{font-size:13px;color:#66748f}
+.form-grid label{font-size:13px;color:#42506b}
+.form-grid input,.form-grid textarea,.form-grid select{display:block;width:100%;margin-top:6px;padding:12px;border:1px solid #d5dcec;border-radius:10px;font-size:14px;background:#fff;outline:0}
+.form-grid input:focus,.form-grid textarea:focus,.form-grid select:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(216,178,92,.25)}
+.upload-area{border:2px dashed #c3cde3;border-radius:14px;background:#f8faff;color:#42506b;font-size:14px;min-height:170px;cursor:pointer;color:#5b6883}
+.upload-area.drag{border-color:var(--gold);background:#fff8e6}
+.upload-area span{font-size:12px}
+.file-list div{font-size:12.5px;border-radius:8px}
+.review-grid div{border-radius:10px}
+.review-grid small{font-size:10.5px}
+.review-grid b{font-size:14px}
+.notice{font-size:13px;border-radius:8px}
+.form-actions .button{padding:12px 22px;font-size:14px;border-radius:10px}
+.button-primary{background:linear-gradient(180deg,#1b3f7a,#0d2a57)}
+.button-gold{background:linear-gradient(180deg,#e2bd63,#c8a04a);color:#3a2a08}
+
+/* ================= TABLES / LISTS (readable sizes) ================= */
+.toolbar input,.toolbar select{font-size:14px;border-radius:10px;padding:12px}
+th,td{font-size:13px}
+th{font-size:11px}
+.actions button{font-size:12.5px}
+.announcement-grid article>b,.facility-grid b{font-size:16px}
+.announcement-grid article>p,.facility-grid span{font-size:13px}
+.detail-info b{font-size:14px}
+.detail-info small{font-size:10.5px}
+.service-detail-hero p{font-size:14px}
+.button{font-size:13px}
+button.up-item{width:100%;text-align:left;font:inherit;cursor:pointer}
+button.up-item:hover{border-color:var(--gold);box-shadow:0 6px 16px rgba(13,42,87,.12)}
+
+/* ================= CALENDAR ================= */
+.cal-layout{display:grid;grid-template-columns:1.7fr 1fr;gap:18px;align-items:start}
+.cal-card{background:var(--card);border:1px solid var(--card-line);border-radius:16px;padding:22px;box-shadow:0 14px 40px rgba(0,0,0,.28)}
+.cal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.cal-nav{display:flex;align-items:center;gap:12px}
+.cal-nav h2{font-family:'Playfair Display',serif;font-size:24px;margin:0;color:var(--ink);min-width:190px;text-align:center}
+.cal-nav button{width:34px;height:34px;border-radius:50%;border:1px solid #d5dcec;background:#fff;color:var(--ink);font-size:18px;line-height:1}
+.cal-nav button:hover{border-color:var(--gold)}
+.cal-legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:#5b6883}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:4px}
+.cal-dots .dot{margin:0}
+.dot.baptism{background:#2f9e6b}.dot.wedding{background:#d8a63a}.dot.funeral{background:#d9622b}.dot.other{background:#2a4a8f}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.cal-dow{text-align:center;font-size:12px;font-weight:600;color:#5b6883;padding:8px 0}
+.cal-cell{min-height:66px;border:1px solid #e6ebf4;border-radius:10px;background:#fff;display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 4px;font-size:14px;color:var(--ink)}
+.cal-cell.empty{border:0;background:transparent}
+button.cal-cell:hover{border-color:var(--gold)}
+.cal-cell.today{border-color:var(--gold);background:#fff8e6;font-weight:700}
+.cal-cell.selected{background:var(--navy);border-color:var(--navy);color:#fff}
+.cal-dots{display:flex;gap:3px;min-height:9px}
+
+/* ================= VIEW CARD (modal) ================= */
+.modal-backdrop{position:fixed;inset:0;z-index:200;background:rgba(4,12,30,.72);backdrop-filter:blur(3px);display:grid;place-items:center;padding:20px}
+.view-card{position:relative;width:min(760px,100%);max-height:92vh;overflow:auto;background:#fff;border:1px solid var(--gold);border-radius:20px;display:grid;grid-template-columns:260px 1fr;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.view-card .svc-img{height:auto;min-height:100%}
+.vc-close{position:absolute;top:10px;right:14px;z-index:2;border:0;background:transparent;font-size:30px;line-height:1;color:#66748f}
+.vc-body{padding:28px 28px 26px}
+.vc-body h3{font-family:'Playfair Display',serif;font-size:24px;letter-spacing:1.5px;margin:0;color:var(--ink)}
+.vc-tag{font-style:italic;color:#66748f;font-size:14px;margin:4px 0 0}
+.vc-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 18px;margin:20px 0}
+.vc-row{display:flex;gap:10px;align-items:flex-start;color:#9a7422}
+.vc-row small{display:block;font-size:11.5px;color:#7a869f}
+.vc-row b{display:block;font-size:14px;color:var(--ink);margin-top:2px}
+.vc-row b.status{display:inline-block;color:inherit;font-size:12px}
+.vc-attach small{display:block;font-size:11.5px;color:#7a869f;margin-bottom:6px}
+.vc-attach img{max-width:100%;max-height:150px;border-radius:10px;border:1px solid #e3e8f2}
+.vc-extra{margin:16px 0;padding:14px;background:#f5f7fc;border-radius:12px;display:grid;gap:8px}
+.vc-extra div{display:flex;gap:10px;font-size:13.5px}
+.vc-extra dt{min-width:82px;color:#7a869f}
+.vc-extra dd{margin:0;color:var(--ink);word-break:break-word}
+.vc-body .button{margin-top:16px;padding:13px;font-size:14px;border-radius:10px}
+
+/* ================= responsive additions ================= */
+@media(max-width:1000px){.login-page{grid-template-columns:1fr}.login-photo{min-height:300px}.cal-layout{grid-template-columns:1fr}}
+@media(max-width:700px){.view-card{grid-template-columns:1fr}.view-card .svc-img{min-height:150px;height:150px}.vc-grid{grid-template-columns:1fr}.cal-cell{min-height:52px;padding:6px 2px;font-size:13px}.cal-nav h2{font-size:20px;min-width:0}.login-photo-copy h1{font-size:36px}.login-card{padding:26px}}
+
+
+/* ====================================================================
+   BACKGROUND PICTURES
+   Layer order: your own JPG (if you add one) -> built-in illustration -> gradient.
+   Drop a photo into public/images/ with the same name and it replaces the drawing.
+   ==================================================================== */
+.svc-img.baptism{background-image:url('/images/baptism.jpg'),url('/images/baptism.svg'),linear-gradient(135deg,#2a86b3,#0d3b66)}
+.svc-img.wedding{background-image:url('/images/wedding.jpg'),url('/images/wedding.svg'),linear-gradient(135deg,#f0dfb4,#b8935a)}
+.svc-img.funeral{background-image:url('/images/funeral.jpg'),url('/images/funeral.svg'),linear-gradient(135deg,#6b4423,#1a0f08)}
+.svc-img.confirmation{background-image:url('/images/confirmation.jpg'),url('/images/confirmation.svg'),linear-gradient(135deg,#c0392b,#5a1a14)}
+.svc-img.communion{background-image:url('/images/communion.jpg'),url('/images/communion.svg'),linear-gradient(135deg,#f5efe0,#c9b27a)}
+.svc-img.blessing{background-image:url('/images/blessing.jpg'),url('/images/blessing.svg'),linear-gradient(135deg,#7fa8d6,#2b4f86)}
+.svc-img.marriageprep{background-image:url('/images/marriageprep.jpg'),url('/images/marriageprep.svg'),linear-gradient(135deg,#d89a9a,#7d3b4a)}
+
+/* service detail hero (one per service) */
+.sd-hero-baptism{background:linear-gradient(90deg,rgba(7,26,58,.9),rgba(7,26,58,.25)),url('/images/baptism.jpg') center/cover no-repeat,url('/images/baptism.svg') center/cover no-repeat,#0d2a57}
+.sd-hero-wedding{background:linear-gradient(90deg,rgba(7,26,58,.9),rgba(7,26,58,.25)),url('/images/wedding.jpg') center/cover no-repeat,url('/images/wedding.svg') center/cover no-repeat,#0d2a57}
+.sd-hero-funeral{background:linear-gradient(90deg,rgba(7,26,58,.9),rgba(7,26,58,.25)),url('/images/funeral.jpg') center/cover no-repeat,url('/images/funeral.svg') center/cover no-repeat,#0d2a57}
+.sd-hero-confirmation{background:linear-gradient(90deg,rgba(7,26,58,.9),rgba(7,26,58,.25)),url('/images/confirmation.jpg') center/cover no-repeat,url('/images/confirmation.svg') center/cover no-repeat,#0d2a57}
+.sd-hero-communion{background:linear-gradient(90deg,rgba(7,26,58,.9),rgba(7,26,58,.25)),url('/images/communion.jpg') center/cover no-repeat,url('/images/communion.svg') center/cover no-repeat,#0d2a57}
+.sd-hero-blessing{background:linear-gradient(90deg,rgba(7,26,58,.9),rgba(7,26,58,.25)),url('/images/blessing.jpg') center/cover no-repeat,url('/images/blessing.svg') center/cover no-repeat,#0d2a57}
+.sd-hero-marriageprep{background:linear-gradient(90deg,rgba(7,26,58,.9),rgba(7,26,58,.25)),url('/images/marriageprep.jpg') center/cover no-repeat,url('/images/marriageprep.svg') center/cover no-repeat,#0d2a57}
+
+.service-detail-hero{min-height:300px;border:1px solid var(--card-line);position:relative;overflow:hidden}
+.service-detail-hero h1{font-size:48px;text-shadow:0 4px 24px rgba(0,0,0,.45)}
+.service-detail-hero p{font-size:15px}
+
+/* app background, hero, login, landing */
+.main-area{background:linear-gradient(rgba(7,26,58,.72),rgba(7,26,58,.9)),url('/images/cathedral.jpg') center top/cover no-repeat fixed,url('/images/cathedral.svg') center top/cover no-repeat fixed,linear-gradient(160deg,#0d2a57,#071a3a)}
+.dashboard-hero{background:linear-gradient(90deg,rgba(7,26,58,.86),rgba(7,26,58,.1) 70%),url('/images/cathedral.jpg') 70% 35%/cover no-repeat,url('/images/cathedral.svg') 70% 35%/cover no-repeat,linear-gradient(135deg,#153a72,#0a1f4a)}
+.login-photo{background:linear-gradient(90deg,rgba(7,26,58,.78),rgba(7,26,58,.15)),url('/images/cathedral.jpg') center/cover no-repeat,url('/images/cathedral.svg') 65% center/cover no-repeat,linear-gradient(135deg,#153a72,#0a1f4a)}
+.landing-page{background:linear-gradient(90deg,rgba(7,32,55,.88),rgba(8,41,67,.45),rgba(8,35,58,.05)),url('/images/cathedral.jpg') center/cover no-repeat,url('/images/cathedral.svg') 70% center/cover no-repeat,#071a3a}
+.announcement-image.one{background-image:url('/images/blessing.jpg'),url('/images/blessing.svg')}
+.announcement-image.two{background-image:url('/images/cathedral.jpg'),url('/images/cathedral.svg')}
+.sidebar{background:linear-gradient(180deg,rgba(10,30,68,.93),rgba(6,20,48,.98)),url('/images/cathedral.jpg') 60% bottom/cover no-repeat,url('/images/cathedral.svg') 62% bottom/cover no-repeat,#071a3a}
+
+/* ====================================================================
+   POLISH: motion, glow, depth
+   ==================================================================== */
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes shimmer{0%,100%{opacity:.55}50%{opacity:1}}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.page-container>*{animation:fadeUp .55s cubic-bezier(.2,.7,.2,1) both}
+.dashboard-page>*{animation:fadeUp .6s cubic-bezier(.2,.7,.2,1) both}
+.dashboard-page>*:nth-child(2){animation-delay:.08s}
+.dashboard-page>*:nth-child(3){animation-delay:.16s}
+.modal-backdrop{animation:fadeUp .25s ease both}
+
+html{scroll-behavior:smooth}
+::selection{background:rgba(216,178,92,.45);color:#fff}
+*{scrollbar-width:thin;scrollbar-color:rgba(216,178,92,.5) transparent}
+*::-webkit-scrollbar{width:8px;height:8px}
+*::-webkit-scrollbar-thumb{background:rgba(216,178,92,.5);border-radius:8px}
+:focus-visible{outline:2px solid var(--gold-2);outline-offset:2px}
+
+/* hero */
+.dashboard-hero{position:relative;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.4)}
+.dashboard-hero::after{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 78% 30%,rgba(255,226,150,.28),transparent 45%);animation:shimmer 6s ease-in-out infinite}
+.dashboard-hero>div{position:relative;z-index:1}
+.hero-small{letter-spacing:.5px;color:var(--gold-2)}
+.dashboard-hero h1{text-shadow:0 4px 26px rgba(0,0,0,.5)}
+.hero-divider{display:flex;align-items:center;gap:10px;max-width:260px;margin:0 0 14px;color:var(--gold-2)}
+.hero-divider span{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--gold-2))}
+.hero-divider span:last-child{background:linear-gradient(90deg,var(--gold-2),transparent)}
+
+/* cards */
+.stat-card{box-shadow:inset 0 3px 0 var(--gold),0 14px 40px rgba(0,0,0,.28);transition:transform .2s,box-shadow .2s}
+.stat-card:hover{transform:translateY(-4px);box-shadow:inset 0 3px 0 var(--gold),0 20px 44px rgba(0,0,0,.36)}
+.stat-icon{box-shadow:0 6px 16px rgba(13,42,87,.18)}
+.panel,.cal-card{position:relative;transition:box-shadow .2s}
+.panel::before,.cal-card::before{content:'';position:absolute;left:22px;right:22px;top:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);border-radius:2px}
+.svc-img{transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+.svc-card:hover .svc-img{transform:scale(1.08)}
+.svc-card{overflow:hidden}
+.svc-img{position:relative}
+.svc-card .svc-img::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(7,26,58,.35))}
+.up-item{transition:transform .15s,border-color .15s,box-shadow .15s}
+button.up-item:hover{transform:translateX(3px)}
+
+/* sidebar */
+.brand-icon{filter:drop-shadow(0 0 14px rgba(240,212,136,.55));animation:floaty 5s ease-in-out infinite}
+.brand strong{background:linear-gradient(180deg,#fff2c4,#d8b25c);-webkit-background-clip:text;background-clip:text;color:transparent}
+.brand strong span{color:transparent}
+.nav-item{transition:background .18s,transform .18s}
+.nav-item:hover{transform:translateX(4px)}
+.nav-item.active .icon{filter:drop-shadow(0 0 6px rgba(240,212,136,.8))}
+
+/* topbar */
+.search-box{transition:box-shadow .2s}
+.search-box:focus-within{box-shadow:0 0 0 3px rgba(216,178,92,.45),0 6px 20px rgba(0,0,0,.2)}
+.admin-profile img,.admin-profile .avatar{box-shadow:0 0 0 3px rgba(216,178,92,.25)}
+
+/* login */
+.login-card{animation:fadeUp .7s cubic-bezier(.2,.7,.2,1) both;backdrop-filter:blur(4px)}
+.login-card .button-primary{transition:transform .15s,box-shadow .15s}
+.login-card .button-primary:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 8px 20px rgba(13,42,87,.4)}
+.google-button{transition:background .15s,box-shadow .15s}
+.google-button:hover:not(:disabled){background:#f4f7fd;box-shadow:0 4px 14px rgba(13,42,87,.12)}
+.login-photo-copy{animation:fadeUp .9s .1s cubic-bezier(.2,.7,.2,1) both}
+
+/* landing */
+.landing-content h1{text-shadow:0 6px 30px rgba(0,0,0,.45)}
+.landing-content>*{animation:fadeUp .8s cubic-bezier(.2,.7,.2,1) both}
+.landing-content>*:nth-child(2){animation-delay:.08s}.landing-content>*:nth-child(3){animation-delay:.16s}.landing-content>*:nth-child(4){animation-delay:.24s}.landing-content>*:nth-child(5){animation-delay:.32s}
+.hero-button{background:linear-gradient(180deg,#e2bd63,#c8a04a);color:#3a2a08;font-size:13px;padding:14px 26px;border-radius:8px;transition:transform .15s,box-shadow .15s}
+.hero-button:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(200,160,74,.45)}
+.landing-header nav button{font-size:13px}
+.landing-features span{font-size:12px}
+.landing-features b{font-size:13px}
+.landing-content>p{font-size:15px}
+.landing-content blockquote{font-size:15px}
+
+/* buttons */
+.button{transition:transform .15s,box-shadow .15s,filter .15s}
+.button:hover:not(:disabled){transform:translateY(-1px);filter:brightness(1.06);box-shadow:0 8px 20px rgba(0,0,0,.25)}
+
+@media(max-width:1000px){.main-area{background-attachment:scroll,scroll,scroll,scroll}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+
+/* ---- fixes from visual check ---- */
+.dashboard-hero .hero-small{font-size:26px;margin:0}
+.dashboard-hero .hero-blessing{font-size:16px;color:#f1f5fc;margin:0 0 8px}
+.dashboard-hero .hero-verse{font-size:14px;line-height:1.65;color:#dbe4f7;margin:0 0 20px}
+.panel .svc-grid .svc-img{height:190px}
+.sidebar{background:linear-gradient(180deg,rgba(10,30,68,.95),rgba(6,20,48,.985)),url('/images/cathedral.jpg') 60% bottom/cover no-repeat,url('/images/cathedral.svg') 62% bottom/cover no-repeat,#071a3a}
+.search-box input{min-width:0;width:100%}
+@media(max-width:700px){.topbar{gap:10px;padding:0 12px}.search-box{flex:1 1 0;min-width:0;padding:0 12px}.topbar-right{gap:10px;flex:none}.admin-profile img,.admin-profile .avatar{width:38px;height:38px}}
+
+/* ---- last polish ---- */
+.eyebrow{font-size:11px;letter-spacing:2px}
+.login-card .eyebrow.dark{color:#9a7422}
+.login-photo{background:linear-gradient(0deg,rgba(7,26,58,.92),rgba(7,26,58,0) 55%),linear-gradient(90deg,rgba(7,26,58,.78),rgba(7,26,58,.15)),url('/images/cathedral.jpg') center/cover no-repeat,url('/images/cathedral.svg') 65% center/cover no-repeat,linear-gradient(135deg,#153a72,#0a1f4a)}
+.svc-pick{grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
