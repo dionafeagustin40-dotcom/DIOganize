@@ -1,0 +1,10 @@
+{
+  "name": "DIOganize Parish Service System",
+  "short_name": "DIOganize",
+  "description": "Church service, application, and scheduling management system.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f5f7fb",
+  "theme_color": "#102d50",
+  "icons": []
+}
