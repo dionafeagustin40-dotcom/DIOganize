@@ -1,8 +1,11 @@
 import { useState } from 'react';
-function Sidebar({ activePage, onNavigate, open, onClose, onLogout, onService }) {
+
+function Sidebar({ activePage, onNavigate, open, onClose, onLogout, onService, account }) {
   const [servicesOpen, setServicesOpen] = useState(false);
   const [applicationsOpen, setApplicationsOpen] = useState(false);
   const [recordsOpen, setRecordsOpen] = useState(false);
+
+  const isAdmin = account?.type === 'Admin';
 
   const go = (target) => {
     onNavigate(target);
@@ -48,7 +51,7 @@ function Sidebar({ activePage, onNavigate, open, onClose, onLogout, onService })
           <button className={`nav-item ${activePage === 'Calendar' ? 'active' : ''}`} onClick={() => go('Calendar')}>Calendar</button>
 
           <button className={`nav-item ${activePage === 'ServiceApplications' ? 'active' : ''}`} onClick={() => setServicesOpen((value) => !value)}>
-            Services <span className="nav-chevron">{servicesOpen ? '−' : '+'}</span>
+            Services <span className="nav-chevron">{servicesOpen ? '' : ''}</span>
           </button>
           {servicesOpen && (
             <div className="nav-submenu">
@@ -59,7 +62,7 @@ function Sidebar({ activePage, onNavigate, open, onClose, onLogout, onService })
           )}
 
           <button className={`nav-item ${activePage === 'Applications' ? 'active' : ''}`} onClick={() => setApplicationsOpen((value) => !value)}>
-            Applications <span className="nav-chevron">{applicationsOpen ? '−' : '+'}</span>
+            {isAdmin ? 'Manage Applications' : 'Applications'} <span className="nav-chevron">{applicationsOpen ? '' : ''}</span>
           </button>
           {applicationsOpen && (
             <div className="nav-submenu">
@@ -70,18 +73,23 @@ function Sidebar({ activePage, onNavigate, open, onClose, onLogout, onService })
             </div>
           )}
 
-          <button className={`nav-item ${activePage === 'Records' ? 'active' : ''}`} onClick={() => setRecordsOpen((value) => !value)}>
-            Records <span className="nav-chevron">{recordsOpen ? '−' : '+'}</span>
-          </button>
-          {recordsOpen && (
-            <div className="nav-submenu">
-              <button onClick={() => recordService('Baptism')}>Baptism Records</button>
-              <button onClick={() => recordService('Wedding')}>Wedding Records</button>
-              <button onClick={() => recordService('Funeral Service')}>Funeral Records</button>
-            </div>
+          {isAdmin && (
+            <>
+              <button className={`nav-item ${activePage === 'Records' ? 'active' : ''}`} onClick={() => setRecordsOpen((value) => !value)}>
+                Parish Records <span className="nav-chevron">{recordsOpen ? '' : ''}</span>
+              </button>
+              {recordsOpen && (
+                <div className="nav-submenu">
+                  <button onClick={() => recordService('Baptism')}>Baptism Records</button>
+                  <button onClick={() => recordService('Wedding')}>Wedding Records</button>
+                  <button onClick={() => recordService('Funeral Service')}>Funeral Records</button>
+                </div>
+              )}
+            </>
           )}
 
           <button className={`nav-item ${activePage === 'Documents' ? 'active' : ''}`} onClick={() => go('Documents')}>Requirements</button>
+          <button className={`nav-item ${activePage === 'Profile' ? 'active' : ''}`} onClick={() => go('Profile')}>Profile</button>
         </nav>
 
         <div className="sidebar-footer">

@@ -26,8 +26,17 @@ function Topbar({ onMenu, onNavigate, account }) {
         />
       </form>
       <div className="topbar-right">
-        <button className="notification-button">●</button>
-        <div className="admin-profile">
+        <button className="notification-button" aria-label="Notifications">●</button>
+        <div
+          className="admin-profile"
+          role="button"
+          tabIndex={0}
+          onClick={() => onNavigate('Profile')}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') onNavigate('Profile');
+          }}
+          style={{ cursor: 'pointer' }}
+        >
           <div className="avatar">{initial}</div>
           <div>
             <strong>{displayName}</strong>
