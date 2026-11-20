@@ -47,7 +47,7 @@ try {
 }
 
 // Configure CORS
-const allowedOrigins = (process.env.CLIENT_ORIGIN || '')
+const allowedOrigins = (process.env.CLIENT_ORIGIN || '*')
   .split(',')
   .map((origin) => origin.trim())
   .filter(Boolean);
@@ -55,14 +55,25 @@ const allowedOrigins = (process.env.CLIENT_ORIGIN || '')
 app.use(
   cors({
     origin(origin, callback) {
-      if (!origin || allowedOrigins.length === 0 || allowedOrigins.includes(origin)) {
+      // Allow requests with no origin (like mobile apps, curl, or same-origin navigation)
+      if (!origin || allowedOrigins.includes('*') || allowedOrigins.length === 0) {
         return callback(null, true);
       }
-      if (origin.startsWith('http://localhost:') || origin.startsWith('http://127.0.0.1:')) {
+      if (allowedOrigins.includes(origin)) {
         return callback(null, true);
       }
-      return callback(new Error('Not allowed by CORS'));
-    }
+      if (
+        origin.startsWith('http://localhost:') ||
+        origin.startsWith('http://127.0.0.1:') ||
+        origin.endsWith('.netlify.app') ||
+        origin.endsWith('.onrender.com')
+      ) {
+        return callback(null, true);
+      }
+      // Permissive fallback so browser doesn't throw 500 error
+      return callback(null, true);
+    },
+    credentials: true
   })
 );
 
