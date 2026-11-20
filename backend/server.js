@@ -147,10 +147,6 @@ function formatApplication(row) {
 }
 
 // Health-check endpoints (for Render & monitoring)
-app.get('/', (req, res) => {
-  res.json({ status: 'ok', message: 'DIOganize Backend is Running!' });
-});
-
 app.get('/api/health', async (req, res, next) => {
   try {
     await db.query('SELECT 1');
@@ -163,6 +159,23 @@ app.get('/api/health', async (req, res, next) => {
     next(error);
   }
 });
+
+// Serve frontend client when available (so the Render deployment link is functional like Netlify)
+const clientPublicPath = path.join(__dirname, 'public');
+const rootDistPath = path.join(__dirname, '../dist');
+const staticDir = fs.existsSync(clientPublicPath)
+  ? clientPublicPath
+  : fs.existsSync(rootDistPath)
+  ? rootDistPath
+  : null;
+
+if (staticDir) {
+  app.use(express.static(staticDir));
+} else {
+  app.get('/', (req, res) => {
+    res.json({ status: 'ok', message: 'DIOganize Backend is Running!' });
+  });
+}
 
 // READ - GET ALL APPLICATIONS (Admin sees all; User sees own)
 app.get('/api/service-applications', verifyFirebaseToken, async (req, res, next) => {
@@ -347,8 +360,14 @@ app.delete('/api/service-applications/:id', verifyFirebaseToken, async (req, res
   }
 });
 
-// 404 handler for unknown API routes
+// SPA Fallback & 404 handler
 app.use((req, res) => {
+  if (staticDir && !req.path.startsWith('/api')) {
+    const indexPath = path.join(staticDir, 'index.html');
+    if (fs.existsSync(indexPath)) {
+      return res.sendFile(indexPath);
+    }
+  }
   res.status(404).json({ error: 'Endpoint not found.' });
 });
 

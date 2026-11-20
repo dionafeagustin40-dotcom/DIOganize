@@ -1,6 +1,19 @@
-import { useState } from 'react';
-import { sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+import { useEffect, useState } from 'react';
+import {
+  getRedirectResult,
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  signInWithRedirect
+} from 'firebase/auth';
 import { auth, googleProvider } from '../firebase';
+
+function isMobileScreen() {
+  if (typeof window === 'undefined') return false;
+  const ua = navigator.userAgent || '';
+  const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
+  return isMobileUA || window.innerWidth <= 768;
+}
 
 function Login({ onLogin, onBack }) {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -10,6 +23,34 @@ function Login({ onLogin, onBack }) {
   const [googleLoading, setGoogleLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+
+  // Handle redirect result when returning from Google OAuth on mobile
+  useEffect(() => {
+    let active = true;
+
+    getRedirectResult(auth)
+      .then((result) => {
+        if (!active || !result || !result.user) return;
+        onLogin('User', {
+          uid: result.user.uid,
+          email: result.user.email,
+          name: result.user.displayName || result.user.email?.split('@')[0] || 'User',
+          photoURL: result.user.photoURL,
+          provider: 'google'
+        });
+      })
+      .catch((err) => {
+        if (!active) return;
+        if (err && err.code && err.code !== 'auth/credential-already-in-use') {
+          console.error('[AUTH] Redirect sign-in error:', err);
+          setError(err.message || 'Google sign-in could not be completed.');
+        }
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [onLogin]);
 
   const submit = async (event) => {
     event.preventDefault();
@@ -37,16 +78,38 @@ function Login({ onLogin, onBack }) {
     setError('');
     setMessage('');
     setGoogleLoading(true);
+
     try {
-      const result = await signInWithPopup(auth, googleProvider);
-      onLogin('User', {
-        uid: result.user.uid,
-        email: result.user.email,
-        name: result.user.displayName || result.user.email?.split('@')[0] || 'User',
-        photoURL: result.user.photoURL,
-        provider: 'google'
-      });
+      if (isMobileScreen()) {
+        // Mobile browsers frequently block popup windows: use seamless page redirect
+        await signInWithRedirect(auth, googleProvider);
+        return;
+      }
+
+      // Desktop browsers attempt popup first
+      try {
+        const result = await signInWithPopup(auth, googleProvider);
+        onLogin('User', {
+          uid: result.user.uid,
+          email: result.user.email,
+          name: result.user.displayName || result.user.email?.split('@')[0] || 'User',
+          photoURL: result.user.photoURL,
+          provider: 'google'
+        });
+      } catch (popupErr) {
+        if (
+          popupErr.code === 'auth/popup-blocked' ||
+          popupErr.code === 'auth/cancelled-popup-request' ||
+          popupErr.code === 'auth/popup-closed-by-user'
+        ) {
+          // If popup is blocked by the browser, fallback immediately to redirect
+          await signInWithRedirect(auth, googleProvider);
+        } else {
+          throw popupErr;
+        }
+      }
     } catch (err) {
+      console.error('[AUTH] Google login error:', err);
       setError(err?.message || 'Google sign-in could not be completed.');
     } finally {
       setGoogleLoading(false);
@@ -91,27 +154,54 @@ function Login({ onLogin, onBack }) {
           <p className="login-intro">Use your account to manage church service requests and schedules.</p>
 
           <label>Email Address
-            <input type="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="you@example.com" />
+            <input
+              type="email"
+              required
+              value={form.email}
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
+              placeholder="you@example.com"
+            />
           </label>
 
           <label>Password
             <div className="simple-password">
-              <input type={passwordVisible ? 'text' : 'password'} required value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} placeholder="Enter your password" />
-              <button type="button" onClick={() => setPasswordVisible((v) => !v)}>{passwordVisible ? 'Hide' : 'Show'}</button>
+              <input
+                type={passwordVisible ? 'text' : 'password'}
+                required
+                value={form.password}
+                onChange={(e) => setForm({ ...form, password: e.target.value })}
+                placeholder="Enter your password"
+              />
+              <button type="button" onClick={() => setPasswordVisible((v) => !v)}>
+                {passwordVisible ? 'Hide' : 'Show'}
+              </button>
             </div>
           </label>
 
           <div className="simple-login-options">
-            <label><input type="checkbox" checked={remember} onChange={(e) => setRemember(e.target.checked)} /> Remember me</label>
+            <label>
+              <input
+                type="checkbox"
+                checked={remember}
+                onChange={(e) => setRemember(e.target.checked)}
+              /> Remember me
+            </label>
             <button type="button" onClick={forgotPassword}>Forgot password?</button>
           </div>
 
           {error && <div className="login-error">{error}</div>}
           {message && <div className="login-success">{message}</div>}
 
-          <button className="simple-signin" disabled={loading}>{loading ? 'Signing in...' : 'Sign in'}</button>
+          <button className="simple-signin" disabled={loading}>
+            {loading ? 'Signing in...' : 'Sign in'}
+          </button>
           <div className="simple-divider"><span>or</span></div>
-          <button type="button" className="simple-google" onClick={handleGoogleLogin} disabled={googleLoading}>
+          <button
+            type="button"
+            className="simple-google"
+            onClick={handleGoogleLogin}
+            disabled={googleLoading}
+          >
             <span>G</span>{googleLoading ? 'Connecting...' : 'Continue with Google'}
           </button>
           <p className="simple-note">Your account is secured by Firebase Authentication.</p>

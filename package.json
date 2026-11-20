@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && node -e \"const fs = require('fs'); fs.rmSync('backend/public', { recursive: true, force: true }); fs.cpSync('dist', 'backend/public', { recursive: true }); console.log('Copied dist to backend/public');\"",
     "preview": "vite preview"
   },
   "dependencies": {
