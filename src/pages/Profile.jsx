@@ -1,14 +1,19 @@
 function Profile({ account, onLogout }) {
-  const displayName = account?.name || 'Parish User';
+  const isAdmin = account?.type === 'Admin';
+  const displayName = account?.name || (isAdmin ? 'Admin' : 'Parish User');
   const initial = displayName.charAt(0).toUpperCase();
 
   return (
     <div>
       <div className="page-heading">
         <div>
-          <small>Account</small>
-          <h1>User Profile</h1>
-          <p>View your signed-in account details and role permissions.</p>
+          <small>{isAdmin ? 'Admin Account' : 'Account'}</small>
+          <h1>{isAdmin ? 'Admin Profile' : 'User Profile'}</h1>
+          <p>
+            {isAdmin
+              ? 'View your administrator account details and system privileges.'
+              : 'View your signed-in account details and role permissions.'}
+          </p>
         </div>
       </div>
 
@@ -22,8 +27,8 @@ function Profile({ account, onLogout }) {
           </div>
           <div>
             <h4 className="mb-1">{displayName}</h4>
-            <span className={`badge ${account?.type === 'Admin' ? 'bg-warning text-dark' : 'bg-primary'}`}>
-              {account?.type || 'User'}
+            <span className={`badge ${isAdmin ? 'bg-warning text-dark' : 'bg-primary'}`}>
+              {isAdmin ? 'Admin' : 'User'}
             </span>
           </div>
         </div>
@@ -35,10 +40,10 @@ function Profile({ account, onLogout }) {
           </div>
           <div className="list-group-item px-0 d-flex justify-content-between">
             <span className="text-muted">Role</span>
-            <strong>{account?.type || 'User'}</strong>
+            <strong>{isAdmin ? 'Admin' : 'User'}</strong>
           </div>
           <div className="list-group-item px-0 d-flex justify-content-between">
-            <span className="text-muted">User ID</span>
+            <span className="text-muted">{isAdmin ? 'Admin ID' : 'User ID'}</span>
             <code className="small">{account?.uid || '—'}</code>
           </div>
         </div>

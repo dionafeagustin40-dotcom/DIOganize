@@ -10,11 +10,25 @@ function Dashboard({ requests, upcoming, onService, onNavigate, onViewRequest, a
   return (
     <div>
       <section className="hero-banner">
-        <div><span className="eyebrow">PARISH ADMINISTRATION</span><h1>Welcome, {account?.name || (account?.type === 'Admin' ? 'Admin' : 'User')}</h1><p>May your day be filled with peace, purpose, and meaningful service.</p></div>
+        <div>
+          <span className="eyebrow">{account?.type === 'Admin' ? 'PARISH ADMINISTRATION' : 'PARISH PORTAL'}</span>
+          <h1>Welcome, {account?.name || (account?.type === 'Admin' ? 'Admin' : 'User')}</h1>
+          <p>
+            {account?.type === 'Admin'
+              ? 'Oversee church operations, review applications, and manage schedules.'
+              : 'May your day be filled with peace, purpose, and meaningful service.'}
+          </p>
+        </div>
         <div className="hero-cross">✦</div>
       </section>
 
-      <div className="page-heading"><div><small>Overview</small><h2>Service Management</h2></div><button className="button button-primary" onClick={() => onNavigate('ScheduleService')}>+ Schedule a Service</button></div>
+      <div className="page-heading">
+        <div>
+          <small>{account?.type === 'Admin' ? 'Admin Overview' : 'Overview'}</small>
+          <h2>{account?.type === 'Admin' ? 'Admin Dashboard' : 'User Dashboard'}</h2>
+        </div>
+        <button className="button button-primary" onClick={() => onNavigate('ScheduleService')}>+ Schedule a Service</button>
+      </div>
 
       <section className="stats-grid">
         <StatCard title="Baptism" value={count('Baptism')} caption={`${upcomingCount('Baptism')} upcoming`} accent="blue" onClick={() => onService('Baptism')} />
