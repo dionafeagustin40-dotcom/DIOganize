@@ -15,6 +15,19 @@ function isMobileScreen() {
   return isMobileUA || window.innerWidth <= 768;
 }
 
+function friendlyAuthError(err, fallback) {
+  const code = err?.code || '';
+  if (code === 'auth/unauthorized-domain') {
+    return `This website (${window.location.hostname}) is not yet authorized for Google Sign-In. Add it in Firebase Console → Authentication → Settings → Authorized domains.`;
+  }
+  if (code === 'auth/invalid-credential' || code === 'auth/wrong-password' || code === 'auth/user-not-found') {
+    return 'Incorrect email or password.';
+  }
+  if (code === 'auth/too-many-requests') return 'Too many attempts. Please wait a moment and try again.';
+  if (code === 'auth/network-request-failed') return 'Network error. Please check your internet connection.';
+  return err?.message || fallback;
+}
+
 function Login({ onLogin, onBack }) {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [remember, setRemember] = useState(false);
@@ -43,7 +56,7 @@ function Login({ onLogin, onBack }) {
         if (!active) return;
         if (err && err.code && err.code !== 'auth/credential-already-in-use') {
           console.error('[AUTH] Redirect sign-in error:', err);
-          setError(err.message || 'Google sign-in could not be completed.');
+          setError(friendlyAuthError(err, 'Google sign-in could not be completed.'));
         }
       });
 
@@ -68,7 +81,7 @@ function Login({ onLogin, onBack }) {
         remember
       });
     } catch (err) {
-      setError(err?.message || 'Email and password sign-in failed.');
+      setError(friendlyAuthError(err, 'Email and password sign-in failed.'));
     } finally {
       setLoading(false);
     }
@@ -110,7 +123,7 @@ function Login({ onLogin, onBack }) {
       }
     } catch (err) {
       console.error('[AUTH] Google login error:', err);
-      setError(err?.message || 'Google sign-in could not be completed.');
+      setError(friendlyAuthError(err, 'Google sign-in could not be completed.'));
     } finally {
       setGoogleLoading(false);
     }

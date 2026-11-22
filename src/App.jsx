@@ -23,7 +23,21 @@ import { onAuthStateChanged, signOut } from 'firebase/auth';
 import './App.css';
 
 const STORAGE_KEY = 'dioganize_requests_v3';
-const API_BASE_URL = (import.meta.env.VITE_API_URL || 'http://localhost:8080').replace(/\/+$/, '');
+const PRODUCTION_API_URL = 'https://dioganize.onrender.com';
+
+function resolveApiBaseUrl() {
+  if (import.meta.env.VITE_API_URL) return import.meta.env.VITE_API_URL;
+  if (typeof window === 'undefined') return PRODUCTION_API_URL;
+  const { hostname, origin } = window.location;
+  // Local development: use the local Express server
+  if (hostname === 'localhost' || hostname === '127.0.0.1') return 'http://localhost:8080';
+  // Served directly by the Render backend: same origin
+  if (hostname.endsWith('.onrender.com')) return origin;
+  // Netlify or any other host: use the live Render API
+  return PRODUCTION_API_URL;
+}
+
+const API_BASE_URL = resolveApiBaseUrl().replace(/\/+$/, '');
 const API_URL = `${API_BASE_URL}/api/service-applications`;
 
 const PAGE_TO_PATH = {
@@ -52,10 +66,20 @@ async function apiRequest(url, options = {}) {
     ...options.headers
   };
 
-  const response = await fetch(url, {
-    ...options,
-    headers
-  });
+  const doFetch = () => fetch(url, { ...options, headers });
+
+  let response;
+  try {
+    response = await doFetch();
+  } catch {
+    // Render free tier may be waking up: wait and retry once
+    await new Promise(resolve => setTimeout(resolve, 4000));
+    try {
+      response = await doFetch();
+    } catch {
+      throw new Error('Cannot reach the server. Please check your internet connection and try again in a few seconds.');
+    }
+  }
 
   const data = await response.json().catch(() => ({}));
 
