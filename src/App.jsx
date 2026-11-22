@@ -18,7 +18,7 @@ import Sidebar from './components/Sidebar';
 import Topbar from './components/Topbar';
 import { initialRequests } from './data/events';
 import { auth, db } from './firebase';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import './App.css';
 
@@ -183,19 +183,39 @@ function App() {
       let role = cachedRole;
 
       try {
-        const roleSnap = await getDoc(doc(db, 'users', user.uid));
+        const userRef = doc(db, 'users', user.uid);
+        const roleSnap = await getDoc(userRef);
 
         if (roleSnap.exists()) {
-          const remoteRole = roleSnap.data()?.role;
+          const data = roleSnap.data() || {};
+          const rawRole = String(data.role || '').trim().toLowerCase();
+          role = rawRole === 'admin' ? 'Admin' : 'User';
 
-          if (remoteRole === 'Admin' || remoteRole === 'User') {
-            role = remoteRole;
-            localStorage.setItem(
-              `dioganize_role_${user.uid}`,
-              role
+          // Sync missing email/name back to Firestore document
+          const updates = {};
+          if (!data.email && user.email) updates.email = user.email;
+          if (!data.name && (user.displayName || user.email)) {
+            updates.name = user.displayName || user.email.split('@')[0];
+          }
+          if (rawRole === 'admin' && data.role !== 'Admin') updates.role = 'Admin';
+          if (Object.keys(updates).length > 0) {
+            setDoc(userRef, updates, { merge: true }).catch((err) =>
+              console.warn('[FIRESTORE] Sync user doc warning:', err)
             );
           }
+        } else {
+          // Document does not exist yet: create user doc with role User and basic profile
+          setDoc(userRef, {
+            email: user.email || '',
+            name: user.displayName || user.email?.split('@')[0] || 'User',
+            role: 'User',
+            created_at: new Date().toISOString()
+          }, { merge: true }).catch((err) =>
+            console.warn('[FIRESTORE] Create user doc warning:', err)
+          );
         }
+
+        localStorage.setItem(`dioganize_role_${user.uid}`, role);
       } catch (error) {
         console.error('Role checking error:', error);
       }
@@ -295,7 +315,8 @@ function App() {
 
   // Login callback
   const handleLogin = (type = 'User', profile = {}) => {
-    const role = type === 'Admin' ? 'Admin' : 'User';
+    const cached = profile.uid ? localStorage.getItem(`dioganize_role_${profile.uid}`) : null;
+    const role = (type === 'Admin' || cached === 'Admin') ? 'Admin' : 'User';
 
     if (profile.uid) {
       localStorage.setItem(

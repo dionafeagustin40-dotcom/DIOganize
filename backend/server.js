@@ -109,8 +109,11 @@ async function verifyFirebaseToken(req, res, next) {
 
     try {
       const userDoc = await getFirestore().collection('users').doc(decoded.uid).get();
-      if (userDoc.exists && userDoc.data()?.role === 'Admin') {
-        role = 'Admin';
+      if (userDoc.exists) {
+        const rawRole = String(userDoc.data()?.role || '').trim().toLowerCase();
+        if (rawRole === 'admin') {
+          role = 'Admin';
+        }
       }
     } catch (firestoreError) {
       console.error('[FIREBASE] Role lookup error:', firestoreError.message);

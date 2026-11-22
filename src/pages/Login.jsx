@@ -6,13 +6,13 @@ import {
   signInWithPopup,
   signInWithRedirect
 } from 'firebase/auth';
-import { auth, googleProvider } from '../firebase';
+import { doc, getDoc } from 'firebase/firestore';
+import { auth, db, googleProvider } from '../firebase';
 
-function isMobileScreen() {
+function isMobileDevice() {
   if (typeof window === 'undefined') return false;
   const ua = navigator.userAgent || '';
-  const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
-  return isMobileUA || window.innerWidth <= 768;
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
 }
 
 function friendlyAuthError(err, fallback) {
@@ -21,11 +21,35 @@ function friendlyAuthError(err, fallback) {
     return `This website (${window.location.hostname}) is not yet authorized for Google Sign-In. Add it in Firebase Console → Authentication → Settings → Authorized domains.`;
   }
   if (code === 'auth/invalid-credential' || code === 'auth/wrong-password' || code === 'auth/user-not-found') {
-    return 'Incorrect email or password.';
+    return 'Incorrect email or password. If you registered with Google, please click Continue with Google.';
   }
   if (code === 'auth/too-many-requests') return 'Too many attempts. Please wait a moment and try again.';
   if (code === 'auth/network-request-failed') return 'Network error. Please check your internet connection.';
+  if (code === 'auth/popup-closed-by-user') return 'Sign-in cancelled.';
   return err?.message || fallback;
+}
+
+async function finishLogin(user, onLogin, provider = 'password', remember = false) {
+  let role = 'User';
+  try {
+    const snap = await getDoc(doc(db, 'users', user.uid));
+    if (snap.exists()) {
+      const raw = String(snap.data()?.role || '').trim().toLowerCase();
+      if (raw === 'admin') role = 'Admin';
+    }
+  } catch {
+    const cached = localStorage.getItem(`dioganize_role_${user.uid}`);
+    if (cached === 'Admin') role = 'Admin';
+  }
+
+  onLogin(role, {
+    uid: user.uid,
+    email: user.email || '',
+    name: user.displayName || user.email?.split('@')[0] || role,
+    photoURL: user.photoURL || '',
+    provider,
+    remember
+  });
 }
 
 function Login({ onLogin, onBack }) {
@@ -42,15 +66,9 @@ function Login({ onLogin, onBack }) {
     let active = true;
 
     getRedirectResult(auth)
-      .then((result) => {
+      .then(async (result) => {
         if (!active || !result || !result.user) return;
-        onLogin('User', {
-          uid: result.user.uid,
-          email: result.user.email,
-          name: result.user.displayName || result.user.email?.split('@')[0] || 'User',
-          photoURL: result.user.photoURL,
-          provider: 'google'
-        });
+        await finishLogin(result.user, onLogin, 'google', false);
       })
       .catch((err) => {
         if (!active) return;
@@ -72,14 +90,7 @@ function Login({ onLogin, onBack }) {
     setLoading(true);
     try {
       const result = await signInWithEmailAndPassword(auth, form.email, form.password);
-      onLogin('User', {
-        uid: result.user.uid,
-        email: result.user.email,
-        name: result.user.displayName || result.user.email?.split('@')[0] || 'User',
-        photoURL: result.user.photoURL,
-        provider: 'password',
-        remember
-      });
+      await finishLogin(result.user, onLogin, 'password', remember);
     } catch (err) {
       setError(friendlyAuthError(err, 'Email and password sign-in failed.'));
     } finally {
@@ -93,29 +104,22 @@ function Login({ onLogin, onBack }) {
     setGoogleLoading(true);
 
     try {
-      if (isMobileScreen()) {
-        // Mobile browsers frequently block popup windows: use seamless page redirect
+      if (isMobileDevice()) {
+        // Mobile browsers block popups: use seamless redirect
         await signInWithRedirect(auth, googleProvider);
         return;
       }
 
-      // Desktop browsers attempt popup first
+      // Desktop browsers: use popup
       try {
         const result = await signInWithPopup(auth, googleProvider);
-        onLogin('User', {
-          uid: result.user.uid,
-          email: result.user.email,
-          name: result.user.displayName || result.user.email?.split('@')[0] || 'User',
-          photoURL: result.user.photoURL,
-          provider: 'google'
-        });
+        await finishLogin(result.user, onLogin, 'google', false);
       } catch (popupErr) {
         if (
           popupErr.code === 'auth/popup-blocked' ||
-          popupErr.code === 'auth/cancelled-popup-request' ||
-          popupErr.code === 'auth/popup-closed-by-user'
+          popupErr.code === 'auth/cancelled-popup-request'
         ) {
-          // If popup is blocked by the browser, fallback immediately to redirect
+          // If popup is blocked by the browser, fallback to redirect
           await signInWithRedirect(auth, googleProvider);
         } else {
           throw popupErr;
